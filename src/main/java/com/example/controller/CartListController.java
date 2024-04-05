@@ -25,6 +25,11 @@ public class CartListController extends HttpServlet {
         final List<CusProProduct> list = dao.cartList(customer_id);
         req.setAttribute("list", list);
 
+        if (list.size() != 0) {
+            final int totalAmount = dao.totalAmount(customer_id);
+            req.setAttribute("totalAmount", totalAmount);
+        }
+
         final int totalAmount = dao.totalAmount(customer_id);
         req.setAttribute("totalAmount", totalAmount);
 

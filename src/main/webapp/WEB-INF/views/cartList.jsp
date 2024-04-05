@@ -9,8 +9,10 @@ f<%@ page contentType="text/html;charset=UTF-8" language="java"  pageEncoding="U
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-
 <script>
+    function goCancel(order_number, customer_id) {
+        location.href = "/shopping/cancel?order_number=" + order_number + "&customer_id="+ customer_id;
+    }
 </script>
 </head>
 <body>
@@ -71,7 +73,7 @@ f<%@ page contentType="text/html;charset=UTF-8" language="java"  pageEncoding="U
                                 <td>${cart.quantity}</td>
                                 <td>${cart.price}</td>
                                 <td>${cart.amount}</td>
-                                <td class="text-center"><button type="button" class="btn btn-sm btn-secondary">Cancel</button></td>
+                                <td class="text-center"><button type="button" onclick="goCancel(${cart.order_number}, '${cusDto.customer_id}')" class="btn btn-sm btn-secondary">Cancel</button></td>
                             </tr>
                         </c:forEach>
                             <tr>
