@@ -13,6 +13,22 @@ f<%@ page contentType="text/html;charset=UTF-8" language="java"  pageEncoding="U
     function goCancel(order_number, customer_id) {
         location.href = "/shopping/cancel?order_number=" + order_number + "&customer_id="+ customer_id;
     }
+
+    function goOrder(customer_id) {
+        alert("주문이 완료 되었습니다.");
+        $ajax({
+            url: "/shopping/empty",
+            type: "get",
+            data: {"customer_id": customer_id},
+            success: function() {
+                alert("장바구니를 비웠습니다.")
+                location.href="/shopping/cartList?customer_id="+customer_id
+            },
+            error: function() {
+                alert("error");
+            }
+        });
+    }
 </script>
 </head>
 <body>
@@ -51,7 +67,7 @@ f<%@ page contentType="text/html;charset=UTF-8" language="java"  pageEncoding="U
             </div>
             <div class="card-body">
                 <div>
-                    <div class="col text-right"><button type="button" class="btn btn-sm btn-danger">주문하기</button></div>
+                    <div class="col text-right"><button type="button" onclick="goOrder('${cusDto.customer_id}')" class="btn btn-sm btn-danger">주문하기</button></div>
                 </div>
                 <h2>Cart List</h2>
                 <table class="table table-bordered table-hover">
@@ -82,6 +98,9 @@ f<%@ page contentType="text/html;charset=UTF-8" language="java"  pageEncoding="U
                             </tr>
                     </tbody>
                 </table>
+                <div class="row">
+                    <div class="col text-right"><button type="button" onclick="location.href='/shopping/list'" class="btn btn-sm btn-primary">Continue Shopping</button></div>
+                </div>
             </div>
             <div class="card-footer text-center">Online Shopping 생각하는 데이터베이스 모델링_박매일</div>
         </div>

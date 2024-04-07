@@ -19,4 +19,35 @@
         VALUES (#{customer_id}, #{product_number}, 1)
     </insert>
 
+    <select id="cartList" parameterType="String" resultType="com.example.entity.CusProProduct">
+        select cp.order_number, cp.product_number, p.product_name, cp.quantity, p.price, (cp.quantity * p.price) amount
+        from customer_product cp
+        inner join product p
+        on cp.product_number = p.product_number
+        where cp.customer_id = #{customer_id}
+    </select>
+
+    <select id="checkAdd" parameterType="com.example.entity.CusPro" resultType="com.example.entity.CusPro">
+        select * from customer_product
+        where customer_id = #{customer_id} and product_number = #{product_number}
+    </select>
+
+    <update id="cartUpdate" parameterType="com.example.entity.CusPro">
+        update customer_product
+        set quantity = quantity + 1
+        where customer_id = #{customer_id} and product_number = #{product_number}
+    </update>
+
+    <select id="totalAmount" parameterType="String" resultType="int">
+        select
+        sum(cp.quantity * p.price) totalamount
+        from customer_product cp
+        inner join product p
+        on cp.product_number = p.product_number
+        where cp.customer_id = #{customer_id};
+    </select>
+
+    <delete id="cartCancel" parameterType="int">
+        delete from customer_product where order_number = #{order_number}
+    </delete>
 </mapper>
