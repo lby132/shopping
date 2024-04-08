@@ -19,21 +19,18 @@ public class CartListController extends HttpServlet {
     
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        final String customer_id = req.getParameter("customer_id");
+        String customer_id = req.getParameter("customer_id");
 
-        final ShopMyBatisDAO dao = new ShopMyBatisDAO();
-        final List<CusProProduct> list = dao.cartList(customer_id);
+        ShopMyBatisDAO dao = new ShopMyBatisDAO();
+        List<CusProProduct> list = dao.cartList(customer_id);
         req.setAttribute("list", list);
 
         if (list.size() != 0) {
-            final int totalAmount = dao.totalAmount(customer_id);
+            int totalAmount = dao.totalAmount(customer_id);
             req.setAttribute("totalAmount", totalAmount);
         }
 
-        final int totalAmount = dao.totalAmount(customer_id);
-        req.setAttribute("totalAmount", totalAmount);
-
-        final RequestDispatcher rd = req.getRequestDispatcher("/WEB-INF/views/cartList.jsp");
+        RequestDispatcher rd = req.getRequestDispatcher("/WEB-INF/views/cartList.jsp");
         rd.forward(req, resp);
     }
 }

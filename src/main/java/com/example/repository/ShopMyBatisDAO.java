@@ -68,8 +68,8 @@ public class ShopMyBatisDAO { // MyBatis API
     }
 
     public int totalAmount(String customer_id) {
-        final SqlSession session = sqlSessionFactory.openSession();
-        int totalAmount = session.selectOne("totalAmount", customer_id);
+        SqlSession session=sqlSessionFactory.openSession();
+        int totalAmount=session.selectOne("totalAmount", customer_id);
         session.close();
         return totalAmount;
     }
@@ -77,6 +77,14 @@ public class ShopMyBatisDAO { // MyBatis API
     public int cartCancel(int order_number) {
         final SqlSession session = sqlSessionFactory.openSession();
         final int cnt = session.delete("cartCancel", order_number);
+        session.commit();
+        session.close();
+        return cnt;
+    }
+
+    public int cartEmpty(String customer_id) {
+        final SqlSession session = sqlSessionFactory.openSession();
+        final int cnt = session.delete("cartEmpty", customer_id);
         session.commit();
         session.close();
         return cnt;

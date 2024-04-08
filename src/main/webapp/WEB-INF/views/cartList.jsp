@@ -15,19 +15,24 @@ f<%@ page contentType="text/html;charset=UTF-8" language="java"  pageEncoding="U
     }
 
     function goOrder(customer_id) {
-        alert("주문이 완료 되었습니다.");
-        $ajax({
-            url: "/shopping/empty",
-            type: "get",
-            data: {"customer_id": customer_id},
-            success: function() {
-                alert("장바구니를 비웠습니다.")
-                location.href="/shopping/cartList?customer_id="+customer_id
-            },
-            error: function() {
-                alert("error");
-            }
-        });
+        if (${!empty totalAmount}) {
+            alert("주문이 완료 되었습니다.");
+            $.ajax({
+                url: "/shopping/empty",
+                type: "get",
+                data: {"customer_id": customer_id},
+                success: function() {
+                    alert("장바구니를 비웠습니다.")
+                    location.href="/shopping/cartList?customer_id="+customer_id
+                },
+                error: function() {
+                    alert("error");
+                }
+            });
+        } else {
+            alert("장바구니에 데이터가 없습니다.");
+            return false;
+        }
     }
 </script>
 </head>

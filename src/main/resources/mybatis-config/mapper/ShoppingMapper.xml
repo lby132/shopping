@@ -40,7 +40,7 @@
 
     <select id="totalAmount" parameterType="String" resultType="int">
         select
-        sum(cp.quantity * p.price) totalamount
+        sum(cp.quantity * p.price) totalAmount
         from customer_product cp
         inner join product p
         on cp.product_number = p.product_number
@@ -49,5 +49,9 @@
 
     <delete id="cartCancel" parameterType="int">
         delete from customer_product where order_number = #{order_number}
+    </delete>
+
+    <delete id="cartEmpty" parameterType="String">
+        delete from customer_product where customer_id = #{customer_id}
     </delete>
 </mapper>
