@@ -14,25 +14,39 @@ f<%@ page contentType="text/html;charset=UTF-8" language="java"  pageEncoding="U
         location.href = "/shopping/cancel?order_number=" + order_number + "&customer_id="+ customer_id;
     }
 
-    function goOrder(customer_id) {
-        if (${!empty totalAmount}) {
-            alert("주문이 완료 되었습니다.");
-            $.ajax({
-                url: "/shopping/empty",
-                type: "get",
-                data: {"customer_id": customer_id},
-                success: function() {
-                    alert("장바구니를 비웠습니다.")
-                    location.href="/shopping/cartList?customer_id="+customer_id
-                },
-                error: function() {
-                    alert("error");
-                }
-            });
-        } else {
-            alert("장바구니에 데이터가 없습니다.");
-            return false;
-        }
+    function goOrder(customer_id){
+     if(${!empty totalAmount}){
+        alert("주문이 완료 되었습니다.");
+         $.ajax({
+             url : "/shopping/empty",
+             type : "get",
+             data : {"customer_id" : customer_id, "totalAmount" : "${totalAmount}"},
+             success : function(data){
+                   alert("장바구니를 비웠습니다.");
+                   location.href="/shopping/cartList?customer_id="+customer_id;
+             },
+             error : function(){  alert("error"); }
+           });
+         }else{
+             alert("장바구니에 데이터가 없습니다.");
+             return false;
+         }
+    }
+
+    function goQuantity(order_number) {
+        var quantity = $("#quantity"+order_number).val();
+
+        $.ajax({
+            url: "/shopping/quantity",
+            type: "post",
+            data: {"order_number": order_number, "quantity": quantity},
+            success: function(cnt) {
+                location.href="/shopping/cartList?customer_id=${cusDto.customer_id}";
+            },
+            error: function() {
+                alert("error");
+            }
+        });
     }
 </script>
 </head>
@@ -91,7 +105,7 @@ f<%@ page contentType="text/html;charset=UTF-8" language="java"  pageEncoding="U
                             <tr>
                                 <td>${cart.product_number}</td>
                                 <td>${cart.product_name}</td>
-                                <td>${cart.quantity}</td>
+                                <td><input type="number" onchange="goQuantity(${cart.order_number})" name="quantity" id="quantity${cart.order_number}" min="1" max="5" class="form-control" value="${cart.quantity}" /></td>
                                 <td>${cart.price}</td>
                                 <td>${cart.amount}</td>
                                 <td class="text-center"><button type="button" onclick="goCancel(${cart.order_number}, '${cusDto.customer_id}')" class="btn btn-sm btn-secondary">Cancel</button></td>

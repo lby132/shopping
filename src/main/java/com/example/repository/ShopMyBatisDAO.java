@@ -90,4 +90,19 @@ public class ShopMyBatisDAO { // MyBatis API
         return cnt;
     }
 
+    public int pointSave(Customer cus) {
+        final SqlSession session = sqlSessionFactory.openSession();
+        final int cnt = session.update("pointSave", cus);
+        session.commit();
+        session.close();
+        return cnt;
+    }
+
+    public int updateQuantity(CusPro dto) {
+        final SqlSession session = sqlSessionFactory.openSession();
+        final int cnt = session.update("updateQuantity", dto);
+        session.commit();
+        session.close();
+        return cnt;
+    }
 }
